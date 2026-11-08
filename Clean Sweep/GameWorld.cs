@@ -21,7 +21,7 @@ internal sealed class GameWorld
     public float TimeLeft, Invincible, ShootCooldown, SuckCooldown, EmptyFlash, Walk;
     public bool Suction;
     public const int MaxRobots = 6;
-    public float SpawnCountdown = 12;
+    public float SpawnCountdown = 5;
     public float Clean => Math.Clamp((50 - Litter.Count - Bullets.Count) * 2, 0, 100);
     public event Action<string>? Sound;
     private Random random = new(731);
@@ -29,7 +29,7 @@ internal sealed class GameWorld
     public void Reset()
     {
         random = new(731); Player = new(210, 210); Velocity = Vector2.Zero; Facing = Vector2.UnitY;
-        Health = 5; Ammo = Destroyed = 0; TimeLeft = 180; SpawnCountdown = 12;
+        Health = 5; Ammo = Destroyed = 0; TimeLeft = 180; SpawnCountdown = 5;
         Invincible = ShootCooldown = SuckCooldown = EmptyFlash = Walk = 0; Suction = false;
         Litter.Clear(); Robots.Clear(); Bullets.Clear(); Effects.Clear();
         foreach (var p in new Vector2[] { new(210, 270), new(245, 290), new(180, 310), new(280, 330), new(315, 270), new(220, 370) }) Litter.Add(new(p, random.Next(6)));
@@ -73,7 +73,7 @@ internal sealed class GameWorld
         SpawnCountdown -= dt;
         if (SpawnCountdown <= 0)
         {
-            SpawnCountdown = 12;
+            SpawnCountdown = 5;
             if (Robots.Count < MaxRobots) SpawnRobot();
         }
         if (movement.LengthSquared() > 1) movement = Vector2.Normalize(movement);
